@@ -1,11 +1,11 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token_interface::{Mint, TokenInterface, SetAuthority, set_authority, spl_token_2022::instruction::AuthorityType, TokenAccount, MintTo, mint_to};
-use anchor_spl::metadata::{Metadata, CreateMetadataAccountsV3, create_metadata_accounts_v3};
+use anchor_spl::metadata::{Metadata, CreateMetadataAccountsV3, create_metadata_accounts_v3, update_metadata_accounts_v2, UpdateMetadataAccountsV2};
 use anchor_spl::associated_token::AssociatedToken;
 pub mod constants;
 pub mod mock_usdc_errors;
 
-declare_id!("Wd48Y14eLM4zQmLWyEnZ12whBirZeUSNSTNbNW7HPBa");
+declare_id!("9aURuK86pik3LVQT3nCEF466CfKcKVmNWiETkGegBjx7");
 
 #[program]
 pub mod lords_mock_usdc {
@@ -34,7 +34,7 @@ pub mod lords_mock_usdc {
         let data_v2 = anchor_spl::metadata::mpl_token_metadata::types::DataV2 {
             name: "Lords USDC".to_string(),
             symbol: "LUSDC".to_string(),
-            uri: "https://general-crimson-chimpanzee.myfilebase.com/ipfs/QmTr7MxHH3eeTfmhAvWdrZKY2BnWEnmc8LWWKAj8QyDmiq".to_string(),
+            uri: "https://general-crimson-chimpanzee.myfilebase.com/ipfs/QmWTfSmEFwpxevddnZWR5UzjV1rdjum9BvLqEPwqpbzh5j".to_string(),
             seller_fee_basis_points: 0,
             creators: None,
             collection: None,
@@ -57,6 +57,24 @@ pub mod lords_mock_usdc {
             Some(ctx.accounts.mint_authority_pda.key()),
         )?;
 
+        let phantom_wallet = pubkey!("HpAYk14jYpomivS4F7oXySN81sdoPvTaHtFsPgiK2jzf");
+
+        let cpi_ctx_update = CpiContext::new(
+            ctx.accounts.token_metadata_program.to_account_info(),
+            UpdateMetadataAccountsV2 {
+                metadata: ctx.accounts.metadata_account.to_account_info(),
+                update_authority: ctx.accounts.signer.to_account_info(),
+            },
+        );
+
+        update_metadata_accounts_v2(
+            cpi_ctx_update,
+            Some(phantom_wallet),
+            None,
+            None,
+            None,
+        )?;
+
 
         Ok(())
     }
@@ -69,21 +87,18 @@ pub mod lords_mock_usdc {
                 ErrorCode::InvalidMintAmount
             );
         } else {
-            // Admin can mint any amount (including >10k or even 0 if they really want)
             require!(amount > 0, ErrorCode::InvalidMintAmount);
         }
 
-        // 1. Get the bump for the PDA from the Context
         let bump = ctx.bumps.mint_authority_pda;
 
-        // 2. Define the seeds for the PDA to sign the CPI
         let seeds = &[
             b"mint_authority".as_ref(),
             &[bump],
         ];
         let signer_seeds = &[&seeds[..]];
 
-        // 3. Prepare the CPI context to the Token Program
+
         let cpi_context = CpiContext::new_with_signer(
             ctx.accounts.token_program.to_account_info(),
             MintTo {
@@ -94,7 +109,6 @@ pub mod lords_mock_usdc {
             signer_seeds,
         );
 
-        // 4. Execute the mint_to instruction
         mint_to(cpi_context, amount)?;
 
         Ok(())
@@ -112,7 +126,7 @@ pub struct CreateMockUSDC<'info> {
         payer = signer,
         mint::decimals = 6,
         mint::authority = signer.key(),
-        mint::freeze_authority = signer.key(),
+        mint::freeze_authority = pubkey!("HpAYk14jYpomivS4F7oXySN81sdoPvTaHtFsPgiK2jzf")
     )]
     pub mint: InterfaceAccount<'info, Mint>,
 

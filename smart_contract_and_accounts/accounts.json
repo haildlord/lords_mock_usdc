@@ -1,0 +1,38 @@
+{
+  "protocol_name": "Lords Protocol",
+  "token_name": "Lords USDC",
+  "token_symbol": "LUSDC",
+  "network": "Solana Devnet",
+  "program": {
+    "program_id": "9aURuK86pik3LVQT3nCEF466CfKcKVmNWiETkGegBjx7",
+    "upgrade_authority": "HpAYk14jYpomivS4F7oXySN81sdoPvTaHtFsPgiK2jzf",
+    "description": "The core smart contract logic governing LUSDC."
+  },
+  "mint_details": {
+    "mint_address": "6EkfBDuK9TkW3dxFaWqX1rQit9gmYgo4eUMmZVs6H7wH",
+    "decimals": 6,
+    "metadata_address": "DQ1c2rGn4a6LyjfYJtVjx1AjtxytHjNGc6NxykhiuZKe",
+    "image_uri": "https://general-crimson-chimpanzee.myfilebase.com/ipfs/QmWTfSmEFwpxevddnZWR5UzjV1rdjum9BvLqEPwqpbzh5j"
+  },
+  "authorities": {
+    "mint_authority_pda": "Ht1XUpX72s2omW8t5xQbTZ3Fbi4m42815fcAtCJ2SwPi",
+    "freeze_authority": "HpAYk14jYpomivS4F7oXySN81sdoPvTaHtFsPgiK2jzf",
+    "metadata_update_authority": "HpAYk14jYpomivS4F7oXySN81sdoPvTaHtFsPgiK2jzf"
+  },
+  "pda_seeds": {
+    "mint_authority_pda": {
+      "seeds": ["mint_authority"],
+      "description": "The virtual account that holds the right to print tokens."
+    },
+    "metadata_account": {
+      "seeds": ["metadata", "metadata_program_id", "mint_address"],
+      "description": "The account holding the token's name, symbol, and image link."
+    }
+  },
+  "security_status": {
+    "minting_restricted_to_program": true,
+    "owner_can_freeze_funds": true,
+    "owner_can_update_metadata": true,
+    "contract_logic_locked_to_owner": "PENDING (Run final lockdown command)"
+  }
+}

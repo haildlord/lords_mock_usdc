@@ -5,14 +5,14 @@ package_manager = "yarn"
 resolution = true
 skip-lint = false
 
-[programs.localnet]
-lords_mock_usdc = "Wd48Y14eLM4zQmLWyEnZ12whBirZeUSNSTNbNW7HPBa"
+[programs.devnet]
+lords_mock_usdc = "9aURuK86pik3LVQT3nCEF466CfKcKVmNWiETkGegBjx7"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]

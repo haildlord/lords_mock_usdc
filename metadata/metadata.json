@@ -1,0 +1,15 @@
+{
+  "name": "Lords USDC",
+  "symbol": "LUSDC",
+  "description": "The official Devnet mock USDC for the Lords Protocol.",
+  "image": "https://general-crimson-chimpanzee.myfilebase.com/ipfs/QmTr7MxHH3eeTfmhAvWdrZKY2BnWEnmc8LWWKAj8QyDmiq",
+  "attributes": [],
+  "properties": {
+    "files": [
+      {
+        "uri": "https://general-crimson-chimpanzee.myfilebase.com/ipfs/QmTr7MxHH3eeTfmhAvWdrZKY2BnWEnmc8LWWKAj8QyDmiq",
+        "type": "image/png"
+      }
+    ]
+  }
+}
