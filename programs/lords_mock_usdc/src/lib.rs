@@ -10,7 +10,6 @@ declare_id!("9aURuK86pik3LVQT3nCEF466CfKcKVmNWiETkGegBjx7");
 #[program]
 pub mod lords_mock_usdc {
     use super::*;
-    use crate::constants::*;
     use crate::mock_usdc_errors::ErrorCode;
 
     pub fn create_mock_usdc(ctx: Context<CreateMockUSDC>) -> Result<()> {
@@ -81,14 +80,7 @@ pub mod lords_mock_usdc {
 
     pub fn mint_mock_usdc(ctx: Context<MintMockUSDC>, amount: u64) -> Result<()> {
 
-        if ctx.accounts.signer.key() != DEVNET_ADMIN_PUBKEY {
-            require!(
-                amount > 0 && amount <= MAX_MOCK_USDC_PER_TX,
-                ErrorCode::InvalidMintAmount
-            );
-        } else {
-            require!(amount > 0, ErrorCode::InvalidMintAmount);
-        }
+        require!(amount > 0, ErrorCode::InvalidMintAmount);
 
         let bump = ctx.bumps.mint_authority_pda;
 
